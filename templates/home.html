@@ -27,7 +27,7 @@
     <div class="gap-4 flex border-[#435238] text-[#435238]">
       <form id="uploadForm" enctype="multipart/form-data" onsubmit="return handleUploadFormSubmit(event)">
         <input type="file" name="image" accept="image/*" class="hidden" id="fileInput" onchange="submitImageForm(this.files[0])" />
-        <label for="fileInput" class="border rounded-full w-12 lg:w-24 h-10 lg:h-20 text-2xl lg:text-4xl cursor-pointer block flex justify-center items-center" title="Upload a picture">
+        <label for="fileInput" id="fileInputIcon" class="border rounded-full w-12 lg:w-24 h-10 lg:h-20 text-2xl lg:text-4xl cursor-pointer block flex justify-center items-center" title="Upload a picture">
           <i class="fa-solid fa-upload"></i>
         </label>
       </form>

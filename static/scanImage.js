@@ -1,4 +1,6 @@
 let lock = false;
+let fileInputIcon = document.getElementById("fileInputIcon");
+let fileInput = document.getElementById("fileInput");
 
 async function submitImageForm(image) {
   if (lock) return;
@@ -6,34 +8,60 @@ async function submitImageForm(image) {
 
   const formData = new FormData();
 
-  if (typeof image === 'string') {
+  if (typeof image === "string") {
     // If image is a URL
-    formData.append('image_url', image);
+    formData.append("image_url", image);
   } else {
+    if (image.size > 4 * 1024 * 1024) {
+      alert("Image file size is too big (>4 MB).");
+      lock = false;
+      return;
+    }
     // If image is a file
-    formData.append('image', image);
+    formData.append("image", image);
   }
 
+  fileInput.disabled = true;
+  fileInputIcon.classList.remove("cursor-pointer");
+  fileInputIcon.innerHTML = (
+    <svg
+      aria-hidden="true"
+      class="w-8 h-8 text-gray-200 animate-spin dark:text-slate-300 fill-[#435238]"
+      viewBox="0 0 100 101"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor"
+      />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill"
+      />
+    </svg>
+  );
+
   try {
-    const response = await fetch('/image', {
-      method: 'POST',
-      body: formData
+    const response = await fetch("/image", {
+      method: "POST",
+      body: formData,
     });
 
     const responseText = await response.text();
 
     // Function to insert HTML and execute script tags
     function insertHTMLWithScripts(html) {
-      const tempDiv = document.createElement('div');
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = html;
 
       // Insert the new content
       document.body.innerHTML = tempDiv.innerHTML;
 
       // Find and evaluate all script tags
-      const scripts = tempDiv.getElementsByTagName('script');
+      const scripts = tempDiv.getElementsByTagName("script");
       for (const script of scripts) {
-        const newScript = document.createElement('script');
+        const newScript = document.createElement("script");
         if (script.src) {
           newScript.src = script.src;
         } else {
@@ -47,15 +75,15 @@ async function submitImageForm(image) {
     insertHTMLWithScripts(responseText);
 
     // Update the URL
-    history.pushState(null, 'Image Upload', '/image');
+    history.pushState(null, "Image Upload", "/image");
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }
 
 function handleUploadFormSubmit(event) {
   event.preventDefault();
-  const fileInput = document.getElementById('fileInput');
+  const fileInput = document.getElementById("fileInput");
   if (fileInput.files.length > 0) {
     submitImageForm(fileInput.files[0]);
   }
