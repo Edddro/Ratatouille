@@ -14,6 +14,7 @@ import json_repair
 
 from PIL import Image
 
+model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 app = Flask(__name__)
 all_recipes = AllRecipes()
 
@@ -164,7 +165,6 @@ if __name__ == '__main__':
     os.environ["GRPC_VERBOSITY"] = "ERROR"
     os.environ["GLOG_minloglevel"] = "2"
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
     # Auto reload for changes to project
     app.jinja_env.auto_reload = True
