@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -36,17 +36,25 @@
       <a href="/"><img src="/static/logo.png" class="w-20 h-20" /></a>
       <div class="relative hidden lg:block" id="navSearch">
         <form action="/search" name="searchForm">
-          <input placeholder="Search" name="query" type="text" class="border text-black rounded-3xl outline-none w-96 text-2xl py-2 px-4" />
-          <i class="fa-solid fa-magnifying-glass absolute text-black right-4 top-1/2 transform -translate-y-1/2 text-2xl cursor-pointer" onclick="document.searchForm.submit();"></i>
+          <input
+            placeholder="Search"
+            name="query"
+            type="text"
+            class="border text-black rounded-3xl outline-none w-96 text-2xl py-2 px-4"
+          />
+          <i
+            class="fa-solid fa-magnifying-glass absolute text-black right-4 top-1/2 transform -translate-y-1/2 text-2xl cursor-pointer"
+            onclick="document.searchForm.submit();"
+          ></i>
         </form>
       </div>
       <script>
-        const navSearch = document.getElementById('navSearch');
+        const navSearch = document.getElementById("navSearch");
         if (window.location.pathname == "/") {
           navSearch.classList.remove("lg:block");
         }
       </script>
-    </nav>    
+    </nav>
     {% block content %}{% endblock %}
   </body>
 </html>
