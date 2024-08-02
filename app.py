@@ -116,7 +116,7 @@ def upload_image_to_freeimage(image=None, image_url=None, image_file=None):
     response = requests.post(url, data=payload, files=files if image_file else None)
     response.raise_for_status()
     response_data = response.json()
-    
+
     if response_data['status_code'] != 200:
         raise Exception(f"Error uploading image: {response_data}")
 
