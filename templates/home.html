@@ -1,0 +1,37 @@
+
+{% from "macros.html" import article_grid %}
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<main>
+  <div class="w-full bg-[url('static/banner.png')] h-48 lg:h-[300px] bg-cover bg-center">
+    <span class="w-full h-full text-white flex flex-col justify-center items-center bg-black bg-opacity-40">
+      <div class="sticky flex items-center">
+        <form action="/search" id="searchForm">
+          <input placeholder="Find a recipe" name="query" type="text" class="text-black rounded-3xl outline-none w-full lg:w-[60vw] text-xl lg:text-4xl pl-4 lg:pl-8 lg:px-16 h-16 lg:h-24" />
+        </form>
+        <i class="fa-solid fa-magnifying-glass absolute text-black right-[6%] lg:right-[2%] text-2xl cursor-pointer" onclick="document.getElementById('searchForm').submit();"></i>
+      </div>
+      <div class="mt-4 justify-left flex gap-4 font-semibold">
+        <a href="http://localhost:8080/search?query=apple+pie">Apple Pie</a>
+        <a href="http://localhost:8080/search?query=new+york+pizza">New York Pizza</a>
+        <a href="http://localhost:8080/search?query=veggie+salad">Veggie Salad</a>
+      </div>
+    </span>
+  </div>
+
+  <div class="w-full flex justify-center mb-48">
+    {{ article_grid(articles) }}
+  </div>
+  <div class="fixed bottom-0 py-4 lg:py-10 border-t w-full flex flex-col items-center bg-white">
+    <div class="gap-4 flex border-[#435238] text-[#435238]">
+      <form id="uploadForm" enctype="multipart/form-data" onsubmit="return handleUploadFormSubmit(event)">
+        <input type="file" name="image" accept="image/*" class="hidden" id="fileInput" onchange="submitImageForm(this.files[0])" />
+        <label for="fileInput" class="border rounded-full w-12 lg:w-24 h-10 lg:h-20 text-2xl lg:text-4xl cursor-pointer block flex justify-center items-center" title="Upload a picture">
+          <i class="fa-solid fa-upload"></i>
+        </label>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

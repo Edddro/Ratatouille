@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}{{ recipe }}{% endblock %}
+{% block content %}
+<div class="flex flex-col xl:flex-row w-full mb-10">
+
+  <div class="h-full flex flex-col items-center">
+    <div class="px-8 lg:px-20 flex justify-center flex-col">
+      <img class="w-80 xl:w-full h-96 bg-no-repeat object-cover rounded-3xl border mt-20" id="recipeThumbnail"
+        src="{{ image_url }}" />
+      <h1 class="text-3xl lg:text-6xl font-semibold mt-2 lg:mt-10">{{ recipe }}</h1>
+      <p class="mt-4">{{ description }}</p>
+      <p class="mt-4">
+      <div class="flex flex-wrap gap-2">
+        {% for ingredient in ingredients %}
+        <p class="border px-2 py-1 rounded-4xl text-sm">{{ ingredient }}</p>
+        {% endfor %}
+      </div>
+      </p>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <div class="mt-10 w-full flex justify-center" id="parentContainer">
+      <button id="toggleRecipes" class="px-4 py-2 text-xl font-semibold border-b-2 border-[#435238]">Recipes</button>
+      <button id="toggleVideos" class="px-4 py-2 text-xl font-semibold border-b-2">Videos</button>
+    </div>
+
+    <div id="videosSection" class="w-full h-full hidden">
+      <div class="grid-cols-1 px-16 gap-4" id="videoContainer"></div>
+      <div class="w-full flex justify-center mt-4">
+        <button id="viewMoreButton"
+          class="text-xl text-[#435238] mt-2 flex gap-2 items-center justify-center">
+          <span>View More</span><i class="fa-solid fa-arrow-down"></i>
+        </button>
+      </div>
+    </div>
+    <div id="recipesSection" class="flex flex-col items-center gap-4 mt-10">
+      {% for result in search_results %}
+      <a target="_blank" href="{{ result['url'] }}" class="text-[#435238] underline">{{ result['name'] }}</a>
+      {% endfor %}
+    </div>
+    <!-- <button class="bg-[#435238] w-10 h-10 rounded-full text-white flex justify-center items-center p-8 text-2xl fixed bottom-10 right-10">
+      <i class="fa-solid fa-microphone"></i>
+    </button>  o7o7o7o7 --> 
+    <div>
+
+
+      <script>
+        const youtubeVideos = {{ youtube_videos| tojson }};
+        let currentIndex = 0;
+        const videosPerPage = 2;
+        const videoContainer = document.getElementById('videoContainer');
+        const viewMoreButton = document.getElementById('viewMoreButton');
+
+        function loadMoreVideos() {
+          const endIndex = currentIndex + videosPerPage;
+          const videosToShow = youtubeVideos.slice(currentIndex, endIndex);
+
+          videosToShow.forEach(videoId => {
+            const videoElement = document.createElement('div');
+            videoElement.classList.add('relative', 'mt-4');
+            videoElement.style.paddingBottom = '56.25%';
+            videoElement.style.height = '0';
+            videoElement.style.overflow = 'hidden';
+
+            videoElement.innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/${videoId}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+          class="absolute top-0 left-0 w-full h-full"
+        ></iframe>
+      `;
+
+            videoContainer.appendChild(videoElement);
+          });
+
+          currentIndex += videosPerPage;
+
+          if (currentIndex >= youtubeVideos.length) {
+            viewMoreButton.style.display = 'none';
+          }
+        }
+
+        viewMoreButton.addEventListener('click', loadMoreVideos);
+
+        // Load the initial videos
+        loadMoreVideos();
+
+        // Toggle functionality
+        const toggleRecipes = document.getElementById('toggleRecipes');
+        const toggleVideos = document.getElementById('toggleVideos');
+        const recipesSection = document.getElementById('recipesSection');
+        const videosSection = document.getElementById('videosSection');
+
+        const borderClass = "border-[#435238]";
+
+        const showVideos = () => {
+          recipesSection.classList.add('hidden');
+          videosSection.classList.remove('hidden');
+          toggleRecipes.classList.remove(borderClass);
+          toggleVideos.classList.add(borderClass);
+        }
+
+        if (!recipesSection.querySelector("a")) {
+          document.getElementById('parentContainer').classList.add("invisible");
+          showVideos()
+        }
+
+        toggleRecipes.addEventListener('click', () => {
+          recipesSection.classList.remove('hidden');
+          videosSection.classList.add('hidden');
+          toggleRecipes.classList.add(borderClass);
+          toggleVideos.classList.remove(borderClass);
+        });
+
+        toggleVideos.addEventListener('click', showVideos);
+      </script>
+      {% endblock %}

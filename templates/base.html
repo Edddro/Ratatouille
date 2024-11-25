@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/static/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/static/favicon/site.webmanifest" />
+
+    <title>Ratatouille - {% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <nav class="w-full border-b py-4 flex items-center justify-around">
+      <a href="/"><img src="/static/logo.png" class="w-20 h-20" /></a>
+      <div class="relative hidden lg:block" id="navSearch">
+        <form action="/search" name="searchForm">
+          <input placeholder="Search" name="query" type="text" class="border text-black rounded-3xl outline-none w-96 text-2xl py-2 px-4" />
+          <i class="fa-solid fa-magnifying-glass absolute text-black right-4 top-1/2 transform -translate-y-1/2 text-2xl cursor-pointer" onclick="document.searchForm.submit();"></i>
+        </form>
+      </div>
+      <script>
+        const navSearch = document.getElementById('navSearch');
+        if (window.location.pathname == "/") {
+          navSearch.classList.remove("lg:block");
+        }
+      </script>
+    </nav>    
+    {% block content %}{% endblock %}
+  </body>
+</html>

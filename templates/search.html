@@ -1,0 +1,12 @@
+{% from "macros.html" import article_grid %} {% extends 'base.html' %} {% block
+title %}{{ query }}{% endblock %} {% block content %}
+<div class="mt-10 px-8 flex justify-center items-center flex-col">
+  {% if search_results %}
+  <h1 class="text-3xl font-semibold">Search results for {{ query }}:</h1>
+  {{ article_grid(search_results) }}
+  {% else %}
+  <h1 class="text-3xl font-semibold">No results found for {{ query }}.</h1>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% macro article_grid(articles) -%}
+<script src="/static/scanImage.js" defer></script>
+
+<div
+  class="mt-10 mb-20 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-fit"
+>
+  {% for article in articles %}
+  <a
+    class="border w-72 rounded-2xl"
+    href="#"
+    onclick='submitImageForm("{{ article["image"] }}"); return false;'
+  >
+    <img src="{{ article['image'] }}" class="h-48 rounded-t-2xl w-full object-cover" />
+    <h1 class="mx-2 mt-2 mb-10 font-bold text-xl">{{ article['name'] }}</h1>
+  </a>
+  {% endfor %}
+</div>
+{%- endmacro %}
